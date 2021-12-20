@@ -1,0 +1,21 @@
+{% extends "UserData/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<div class="row">
+  <div class="container">
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        選擇螺絲單位 <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="{{ url_for('AiDetect.AI_DataInput_UK')}}">公制</a></li>
+        <li><a href="{{ url_for('AiDetect.AI_DataInput_US')}}">美制</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock page_content %}

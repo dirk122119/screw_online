@@ -1,0 +1,11 @@
+{% extends "UserData/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+
+<form action="http://127.0.0.1:5000/Manual/upload" enctype="multipart/form-data" method="POST"> 
+  <input type="file" name="pic" />
+  <input type="submit" value="Upload a file"/>
+</form>
+
+{% endblock page_content %}

@@ -1,0 +1,81 @@
+{% extends "bootstrap/base.html"  %}
+{% block styles %}
+    <!-- Bootstrap -->
+    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
+    <style>
+        .sidenav {
+          height: 100%;
+          width: 200px;
+          position: fixed;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          background-color: #111;
+          overflow-x: hidden;
+          padding-top: 20px;
+        }
+        
+        .sidenav a {
+          padding: 6px 60px 6px 32px;
+          text-decoration: none;
+          font-size: 25px;
+          color: #818181;
+          display: block;
+        }
+        
+        .sidenav a:hover {
+          color: #f1f1f1;
+        }
+        
+        .main {
+          margin-left: 250px; /* Same as the width of the sidenav */
+        }
+        
+        @media screen and (max-height: 450px) {
+          .sidenav {padding-top: 15px;}
+          .sidenav a {font-size: 18px;}
+        }
+
+        
+        </style>
+        
+{% endblock styles %}
+
+{% block navbar %}
+<div class="sidenav">
+    <a href="{{ url_for('UserData.base_off')}}" class="btn btn-success btn-sm active" role="button" aria-pressed="true">自動偵測on</a>
+    <span>   </span>
+    <a href="{{ url_for('AiDetect.Option_select')}}">開始偵測</a>  
+    
+    <a href="{{ url_for('QuotationSheet.get_sheet')}}">報價單</a>
+    {% if current_user.is_authenticated %}
+        <div>
+          <a>{{current_user.username}}</a>
+          <a href= "{{ url_for('UserData.logout')}}">
+          <span class="ms-1 d-none d-sm-inline">登出</span></a>
+        </div>
+    {% else %}
+        <div>
+          <a href= "{{ url_for('UserData.login')}}">登入</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="main">
+  {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <!-- 弄一個x的button，點擊之後讓訊息消失，可參考bootstrap說明 -->
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+  <h1 class="text-center">久耐秀報價系統</h1>
+
+    {% block page_content %}
+    {% endblock page_content %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,87 @@
+{% extends "UserData/base_off.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<div class="row">
+  <div class="container">
+      <div class="col-sm-4">
+        <div class="card" style="width: 36rem;">
+            <div class="card-body">
+              <h2 class="card-title">輸入要找的螺絲尺寸(公制)</h2>
+              {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <br>
+        <br>
+        <br>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">螺絲編號</th>
+              <th scope="col">身長</th>
+              <th scope="col">身直徑</th>
+              <th scope="col">頭寬</th>
+              <th scope="col">頭長</th>
+              <th scope="col">頭部鑿洞數</th>
+              <th scope="col">頭部形狀</th>
+              <th scope="col">鍍膜種類</th>
+              <th scope="col">價錢</th>
+              <th scope="col">取消</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in table_list %}
+            {% if  not item.chose %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ item.screwclass.number }}</td>
+              <td>{{ item.screwclass.Screw_Body_Length }} mm</td>
+              <td>{{ item.screwclass.Screw_Body_Width }} mm</td>
+              <td>{{ item.screwclass.Screw_Head_Width }} mm</td>
+              <td>{{ item.screwclass.Screw_Head_length }} mm</td>
+              <td>{{ item.screwclass.Screw_Head_wholenum }}</td>
+              <td>{{ item.screwclass.Screw_Head_Type }}</td>
+              <td>{{ item.screwclass.Screw_coat }}</td>
+              <td>{{ item.screwclass.ScrewPrice }} NTD</td>
+              <td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#flipFlop{{ loop.index }}">選取</button></td>
+              <!--Modal-->
+              
+                
+                <!-- The modal -->
+                <div class="modal fade" id="flipFlop{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="modalLabel">確定要選取{{ item.screwclass.number }}？</h4>
+                </div>
+                <div class="modal-footer">
+                <a href="{{url_for('ManualInput.Manual_DeleteItem_US',number=item.screwclass.number)}}" role="button" class="btn btn-danger" aria-pressed="true">確定選取</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+                </div>
+                </div>
+            </tr>
+            {% endif %}
+        {% endfor %}
+          </tbody>
+        </table>
+        <a href="{{ url_for('QuotationSheet.get_sheet')}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">前往報價</a>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock page_content %}

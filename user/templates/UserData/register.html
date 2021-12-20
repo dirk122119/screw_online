@@ -1,0 +1,33 @@
+
+{% extends "UserData/base.html" %}
+{% block page_content %}
+
+
+            <h5 class="card-title">註冊</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Welcome To My Blog</h6>
+
+            <form action = "{{url_for('UserData.register')}}" method = "POST">
+                {{ form.csrf_token }}
+                <fieldset>
+                    {{ form.username.label }}
+                    <br>
+                    {{ form.username }}
+                    <br>
+                    {{ form.email.label }}
+                    <br>
+                    {{ form.email }}
+                    <br>
+                    {{ form.password.label }}
+                    <br>
+                    {{ form.password }}
+                    <br>
+                    {{ form.password2.label }}
+                    <br>
+                    {{ form.password2 }}
+                    <br>
+                    <br>
+                    {{ form.submit }}
+                </fieldset>
+      </form>
+
+{% endblock page_content%}
