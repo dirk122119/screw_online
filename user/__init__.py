@@ -34,12 +34,10 @@ migrate=Migrate(app,db)
 #  很重要，一定要放這邊
 from user.UserData.view import UserData
 from user.ManualInput.view import ManualInput
-from user.AiDetect.view import AiDetect
 from user.QuotationSheet.view import QuotationSheet
 
 app.register_blueprint(UserData,url_prefix='/user')
 app.register_blueprint(ManualInput,url_prefix='/Manual')
-app.register_blueprint(AiDetect,url_prefix='/AiDetect')
 app.register_blueprint(QuotationSheet,url_prefix='/QuotationSheet')
 
 from  user.UserData.model import UserRegister
