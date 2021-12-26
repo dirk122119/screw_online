@@ -1,4 +1,4 @@
-{% extends "UserData/base.html" %}
+{% extends "UserData/base_off.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
@@ -82,10 +82,10 @@
     
 
       <h2>
-         <button id="btnExport" onclick="fnExcelReport();">匯出excel</button>
+         <button id="btnExport" onclick="clic2csv();">匯出excel</button>
       </h2>
 
-<div class="row" style="display:none">
+<div class="row" style="visibility:hidden">
    <table id="nonshow_table" class="display" cellspacing="0" width="100%">
       <thead>
          <tr>
@@ -141,7 +141,7 @@
 
 
       <script>
-
+         var num_list=[];
         $(document).ready(function ()
         {
 
@@ -203,8 +203,10 @@
                   document.getElementById("excel_Screw_Head_Type_"+id_num.toString()).innerHTML=document.getElementById("Screw_Head_Type_"+id_num.toString()).innerHTML
                   document.getElementById("excel_Screw_coat_"+id_num.toString()).innerHTML=document.getElementById("Screw_coat_"+id_num.toString()).innerHTML
                   document.getElementById("excel_price_"+id_num.toString()).innerHTML=document.getElementById("price_"+id_num.toString()).innerHTML
-                  document.getElementById("excel_number_"+id_num.toString()).innerHTML=num
+                  document.getElementById("excel_number_"+id_num.toString()).innerHTML=num.toString()
                   document.getElementById("excel_totalprice_"+id_num.toString()).innerHTML=document.getElementById("totalprice_"+id_num.toString()).innerHTML
+               
+                  num_list.push(num.toString())
                }
 
       
@@ -213,44 +215,63 @@
             });      
          });
         
-         function fnExcelReport()
+
+         function clic2csv()
          {
-            var table = $('#nonshow_table').DataTable();
-            var data = table.$('input').serialize();
-            var num_data=data.toString().split("&")
-
-            var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
-            var textRange;
-            var j=0;
-            tab = document.getElementById('example'); // id of table
-            for(let j = 0; j < tab.rows.length; j++) 
-            {  
-               tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
-               
-            }
-            
-            tab_text=tab_text+"</table>";
-            //tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
-            //tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
-            //tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
-
-            var ua = window.navigator.userAgent;
-            var msie = ua.indexOf("MSIE "); 
-
-            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
-            {
-               txtArea1.document.open("txt/html","replace");
-               txtArea1.document.write(tab_text);
-               txtArea1.document.close();
-               txtArea1.focus(); 
-               sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
-            }  
-            else                 //other browser not tested on IE 11
-               sa = window.open('data:application/vnd.ms-excel,' +　encodeURIComponent(tab_text));  
-
-            return (sa);
+            var html = document.querySelector("table").outerHTML;
+            htmlToCSV(html, "報價單.csv");
          }
-    
+         function htmlToCSV(html, filename)
+         {
+            var data = [];
+            var rows = document.querySelectorAll("table tr");
+            
+            var tablelen= rows.length;
+            for (var i = 0; i < rows.length; i++) {
+               var row = [], cols = rows[i].querySelectorAll("td, th");
+               for (var j = 0; j < cols.length; j++) 
+               {
+                  if(i!=0)
+                  {
+                     if(j==10)
+                     {
+                        row.push(num_list[i-1]);
+                     }
+                     else
+                     {
+                        row.push(cols[j].innerText);
+                     }
+                  }
+                  else
+                  {
+                        row.push(cols[j].innerText);
+                  }
+               }
+                     
+               data.push(row.join(",")); 		
+            }
+
+            downloadCSVFile(data.join("\n"), filename);
+         }
+
+         function downloadCSVFile(csv, filename)
+         {
+            var csv_file, download_link;
+
+            csv_file = new Blob([csv], {type: "text/csv"});
+
+            download_link = document.createElement("a");
+
+            download_link.download = filename;
+
+            download_link.href = window.URL.createObjectURL(csv_file);
+
+            download_link.style.display = "none";
+
+            document.body.appendChild(download_link);
+
+            download_link.click();
+         }
 
       </script>
 

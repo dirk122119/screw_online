@@ -8,7 +8,7 @@ UserData=Blueprint('UserData',__name__)
 @UserData.route('/')
 ##@login_required
 def home():
-    return render_template('UserData/base.html')
+    return render_template('UserData/base_off.html')
 
 @UserData.route('/aidetect')
 def base_on():

@@ -51,15 +51,8 @@ def DataInput_UK():
             Screw_coat=coat_dict[Coat],
             Screw_label=label_dict[Head_Label]
             ).all():
-            flash("找不到對應的螺絲")
-            flash(Headtype_dict[Headtype])
-            flash(Headwholenum_dict[Head_Whole_Num])
-            flash( Head_Legth)
-            flash(Head_Width)
-            flash(Body_Length)
-            flash(Body_Width)
-            flash(coat_dict[Coat])
-            flash(label_dict[Head_Label])
+            flash("找不到對應的螺絲",category='danger')
+            
             return redirect(url_for('ManualInput.DataInput_UK'))
         else:
             find_screw=ScrewClass.query.filter_by(
@@ -76,9 +69,9 @@ def DataInput_UK():
             if not AddScrewTotable.query.filter_by(screw_number=find_screw.number).all():
                 db.session.add(add_item)
                 db.session.commit()
-                flash("加入"+str(find_screw.number))
+                flash("加入"+str(find_screw.number),category='success')
             else:
-                flash("以存在"+str(find_screw.number))
+                flash("以存在"+str(find_screw.number),category='danger')
             return redirect(url_for('ManualInput.DataInput_UK'))
 
     return render_template('ManualInput/ManualInput_uk.html',form=form,table_list=table_list)
@@ -126,14 +119,7 @@ def DataInput_US():
             Screw_coat=coat_dict[Coat],
             Screw_label=label_dict[Head_Label]
             ).all():
-            flash(Headtype_dict[Headtype])
-            flash(Headwholenum_dict[Head_Whole_Num])
-            flash( Head_Legth)
-            flash(Head_Width)
-            flash(Body_Length)
-            flash(Body_Width)
-            flash(coat_dict[Coat])
-            flash(label_dict[Head_Label])
+            flash("找不到對應的螺絲",category='danger')
 
             return redirect(url_for('ManualInput.DataInput_US'))
         else:
@@ -151,9 +137,9 @@ def DataInput_US():
             if  not AddScrewTotable.query.filter_by(screw_number=find_screw.number).all():
                 db.session.add(add_item)
                 db.session.commit()
-                flash("加入"+str(find_screw.number))
+                flash("加入"+str(find_screw.number),category='success')
             else:
-                flash("以存在"+str(find_screw.number))
+                flash("以存在"+str(find_screw.number),category='danger')
             return redirect(url_for('ManualInput.DataInput_US'))
 
     return render_template('ManualInput/ManualInput_us.html',form=form,table_list=table_list)
